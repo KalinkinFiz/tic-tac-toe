@@ -1,35 +1,86 @@
 class TicTacToe {
-    constructor() {
+  constructor() {
+    this.firstSymbol = "x";
+    this.matrix = [];
 
+    for (let i = 0; i < 3; i++) {
+      this.matrix[i] = [];
+      for (let j = 0; j < 3; j++) {
+        this.matrix[i][j] = null;
+      }
+    }
+  }
+
+  getCurrentPlayerSymbol() {
+    return this.firstSymbol;
+  }
+
+  changePlayerSymbol() {
+    return this.firstSymbol === "x" ? "o" : "x";
+  }
+
+  nextTurn(rowIndex, columnIndex) {
+    if (this.matrix[rowIndex][columnIndex] === null) {
+      this.matrix[rowIndex][columnIndex] = this.firstSymbol;
+      this.firstSymbol = this.changePlayerSymbol();
+    }
+  }
+
+  win() {
+    if (
+      this.matrix[0][0] === this.matrix[1][1] &&
+      this.matrix[0][0] === this.matrix[2][2]
+    ) {
+      return this.matrix[0][0];
     }
 
-    getCurrentPlayerSymbol() {
-
+    if (
+      this.matrix[0][2] === this.matrix[1][1] &&
+      this.matrix[0][2] === this.matrix[2][0]
+    ) {
+      return this.matrix[0][2];
     }
 
-    nextTurn(rowIndex, columnIndex) {
-
+    for (let i = 0; i < 3; i++) {
+      if (
+        this.matrix[i][0] === this.matrix[i][1] &&
+        this.matrix[i][0] === this.matrix[i][2]
+      ) {
+        return this.matrix[i][0];
+      }
     }
 
-    isFinished() {
-
+    for (let i = 0; i < 3; i++) {
+      if (
+        this.matrix[0][i] === this.matrix[1][i] &&
+        this.matrix[0][i] === this.matrix[2][i]
+      ) {
+        return this.matrix[0][i];
+      }
     }
+    return null;
+  }
 
-    getWinner() {
+  isFinished() {
+    return this.isDraw() || !!this.getWinner();
+  }
 
-    }
+  getWinner() {
+    this.winner = this.win();
+    return this.winner;
+  }
 
-    noMoreTurns() {
+  noMoreTurns() {
+    return this.matrix.flat().every((itm) => Boolean(itm));
+  }
 
-    }
+  isDraw() {
+    return this.noMoreTurns() && !this.getWinner();
+  }
 
-    isDraw() {
-
-    }
-
-    getFieldValue(rowIndex, colIndex) {
-
-    }
+  getFieldValue(rowIndex, colIndex) {
+    return this.matrix[rowIndex][colIndex];
+  }
 }
 
 module.exports = TicTacToe;
